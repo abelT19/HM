@@ -1,0 +1,18 @@
+[
+  "id",
+  "userId",
+  "dishName",
+  "quantity",
+  "receipt_url",
+  "delivery_details",
+  "status",
+  "rejection_reason",
+  "createdAt",
+  "order_type",
+  "maps_url",
+  "govt_id_url",
+  "guest_name",
+  "guest_phone",
+  "unit_price",
+  "total_price"
+]

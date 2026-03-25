@@ -1,0 +1,14 @@
+[
+  "id",
+  "guestName",
+  "roomId",
+  "checkIn",
+  "checkOut",
+  "totalPrice",
+  "payment_proof_url",
+  "status",
+  "createdAt",
+  "userId",
+  "guestEmail",
+  "numGuests"
+]

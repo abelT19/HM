@@ -1,0 +1,82 @@
+﻿
+> hotel-management@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 6.7s
+  Running TypeScript ...
+cmd : Failed to 
+compile.
+At line:1 char:1
++ cmd /c npm run 
+build > build.log 
+2>&1
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (Failed    
+ to compile.:Stri    
+ng) [], RemoteEx    
+ception
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+
+./src/app/dashboard/r
+eception/page.tsx:101
+:23
+Type error: Type '{ 
+bookingId: string; 
+initialCheckedIn: 
+boolean; 
+initialCheckedOut: 
+boolean; }' is not 
+assignable to type 
+'IntrinsicAttributes 
+& Props'.
+  Property 
+'initialCheckedIn' 
+does not exist on 
+type 
+'IntrinsicAttributes 
+& Props'.
+
+[0m [90m  99 
+|[39m               
+      [33m<[39m[33
+mCheckInOutButtons[3
+9m
+ [90m 100 |[39m    
+                   bo
+okingId[33m=[39m{bo
+oking[33m.[39mid}
+[31m[1m>[22m[39m
+[90m 101 |[39m      
+                 init
+ialCheckedIn[33m=[3
+9m{booking[33m.[39m
+checkedIn}
+ [90m     |[39m    
+                   
+[31m[1m^[22m[39m
+ [90m 102 |[39m    
+                   in
+itialCheckedOut[33m=
+[39m{booking[33m.[
+39mcheckedOut}
+ [90m 103 |[39m    
+                 [33
+m/[39m[33m>[39m
+ [90m 104 |[39m    
+               [33m<
+[39m[33m/[39m[33m
+div[39m[33m>[39m[
+0m
+Next.js build worker 
+exited with code: 1 
+and signal: null
