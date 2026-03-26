@@ -14,8 +14,20 @@ function createPool(): mysql.Pool {
 
   if (connectionUri) {
     console.log("[DB] using DATABASE_URL connection string");
+    
+    // Clean Prisma-specific SSL params from the URL that mysql2 rejects
+    let cleanedUri = connectionUri;
+    try {
+      const url = new URL(connectionUri);
+      url.searchParams.delete("ssl-mode");
+      url.searchParams.delete("sslaccept");
+      cleanedUri = url.toString();
+    } catch (e) {
+      // ignore parse errors
+    }
+
     instance = mysql.createPool({
-      uri: connectionUri,
+      uri: cleanedUri,
       waitForConnections: true,
       connectionLimit: limit,
       ssl: {
