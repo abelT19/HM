@@ -1,26 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { pool } from "@/lib/db";
 import { getToken } from "next-auth/jwt";
+import { ensureDatabaseSetup } from "@/lib/setup";
 
 // --- 1. GET ALL ROOMS (For the Client Suite View) ---
 export async function GET() {
   try {
-    // Lazy Migration: Ensure capacity column exists and synchronize prices/capacities
-    try {
-      const [columns]: any = await pool.execute("SHOW COLUMNS FROM Room LIKE 'capacity'");
-      if (columns.length === 0) {
-        console.log("[Migration] Adding capacity column and synchronizing prices to ETB...");
-        await pool.execute("ALTER TABLE Room ADD COLUMN capacity INT DEFAULT 2 AFTER price");
-        
-        // One-time sync to the new ETB standards requested by the user
-        await pool.execute("UPDATE Room SET price = 2000, capacity = 2 WHERE type = 'SINGLE'");
-        await pool.execute("UPDATE Room SET price = 4000, capacity = 4 WHERE type = 'DOUBLE'");
-        await pool.execute("UPDATE Room SET price = 4500, capacity = 5 WHERE type = 'FAMILY'");
-        await pool.execute("UPDATE Room SET price = 6000, capacity = 6 WHERE type = 'PRESIDENTIAL'");
-      }
-    } catch (e) {
-      console.error('[Migration] Lazy migration error:', e);
-    }
+    // Self-Healing Database Setup & Seeding
+    await ensureDatabaseSetup();
 
     const [rooms] = await pool.execute(
       "SELECT * FROM Room ORDER BY roomNumber ASC"
