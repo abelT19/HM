@@ -6,13 +6,14 @@ declare global {
 }
 
 function createPool(): mysql.Pool {
-  const connectionUri = process.env.DATABASE_URL;
+  const connectionUri = process.env.DATABASE_URL?.trim();
 
   if (connectionUri) {
     // Clean Prisma-specific SSL params that mysql2 doesn't recognize
     let cleanedUri = connectionUri;
     try {
       const url = new URL(connectionUri);
+      console.log("[DB] Connecting to database host:", url.hostname);
       url.searchParams.delete("ssl-mode");
       url.searchParams.delete("sslaccept");
       cleanedUri = url.toString();
