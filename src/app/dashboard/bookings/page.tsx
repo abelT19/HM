@@ -4,6 +4,8 @@ import Link from "next/link";
 import BookingsClient from "./BookingsClient";
 import { Building2 } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 async function getBookings() {
   try {
     const [bookings]: any = await pool.execute(`

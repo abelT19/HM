@@ -1,7 +1,6 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
-
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -10,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 
 import DashboardLayout from "@/app/dashboard/layout";
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
     const searchParams = useSearchParams();
     const type = searchParams.get("type") || "indoor";
     const isOutdoor = type === "outdoor";
@@ -90,4 +89,12 @@ export default function OrderSuccessPage() {
 
     // wrap in dashboard layout to enforce guest sidebar if viewed under /dashboard
     return <DashboardLayout>{content}</DashboardLayout>;
+}
+
+export default function OrderSuccessPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-slate-500">Loading your order status...</div>}>
+            <OrderSuccessContent />
+        </Suspense>
+    );
 }

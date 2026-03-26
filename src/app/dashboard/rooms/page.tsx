@@ -7,6 +7,8 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 
+export const dynamic = 'force-dynamic';
+
 type Room = {
   id: string;
   roomNumber: string;

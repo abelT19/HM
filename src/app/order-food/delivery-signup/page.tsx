@@ -1,8 +1,9 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+// The component at the end of the file will wrap the newly created DeliverySignupContent:
 
-import { useState } from "react";
+
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Upload, Car, MapPin, User, Phone, CheckCircle2, AlertCircle, ShieldAlert } from "lucide-react";
@@ -43,7 +44,7 @@ function FileUploadZone({ file, onChange, label, hint }: {
     );
 }
 
-export default function DeliverySignupPage() {
+function DeliverySignupContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const dish = searchParams.get("dish") || "";
@@ -247,5 +248,13 @@ export default function DeliverySignupPage() {
                 </motion.div>
             </div>
         </div>
+    );
+}
+
+export default function DeliverySignupPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen py-16 text-center text-slate-500">Loading delivery form...</div>}>
+            <DeliverySignupContent />
+        </Suspense>
     );
 }
