@@ -9,29 +9,37 @@ function createPool(): mysql.Pool {
   const connectionUri = process.env.DATABASE_URL?.trim();
 
   if (connectionUri) {
-    // Clean Prisma-specific SSL params that mysql2 doesn't recognize
-    let cleanedUri = connectionUri;
     try {
       const url = new URL(connectionUri);
-      console.log("[DB] Connecting to database host:", url.hostname);
-      url.searchParams.delete("ssl-mode");
-      url.searchParams.delete("sslaccept");
-      cleanedUri = url.toString();
-    } catch (e) {
-      console.warn("[DB] URI parsing error:", e);
-    }
+      
+      // DIAGNOSTICS: Character code logging to find invisible garbage characters
+      const host = url.hostname;
+      const charCodes = Array.from(host).map(c => c.charCodeAt(0)).join(',');
+      console.log(`[DB] Parsing hostname: "${host}" (Length: ${host.length}, CharCodes: ${charCodes})`);
 
-    return mysql.createPool({
-      uri: cleanedUri,
-      ssl: {
-        rejectUnauthorized: false
-      },
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-      enableKeepAlive: true,
-      keepAliveInitialDelay: 0
-    } as any);
+      const config: any = {
+        host: host,
+        port: parseInt(url.port) || 3306,
+        user: url.username,
+        password: url.password,
+        database: url.pathname.substring(1),
+        ssl: {
+          rejectUnauthorized: false
+        },
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        enableKeepAlive: true,
+        keepAliveInitialDelay: 0
+      };
+
+      console.log(`[DB] Pool Config: host=${config.host}, port=${config.port}, user=${config.user}, database=${config.database}`);
+
+      return mysql.createPool(config);
+    } catch (e: any) {
+      console.error("[DB] Critical Error during pool creation:", e.message || e);
+      throw e;
+    }
   } else {
     // Fallback for local development
     return mysql.createPool({
